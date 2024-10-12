@@ -1,6 +1,6 @@
-<%= error ?? "" %>
 <form action="/auth/register" method="POST" class="w-50 m-auto p-5 mt-5 shadow">
   <h3>Register</h3>
+  <% if (typeof error === undefined) { %> <%= error %> <% } %>
   <input
     type="name"
     name="name"
