@@ -3,11 +3,11 @@ const prisma = new PrismaClient();
 
 exports.getPosts = async (req, res) => {
     const posts = await prisma.post.findMany({ where: { authorId: req.session.userId } });
-    res.render('posts/list', { posts, title: 'posts' });
+    res.render('posts/list', { posts, title: 'posts' }); //view(ui=>list.ejs)
 };
 
 exports.getCreatePost = (req, res) => {
-    res.render('posts/create', { title: 'create post' });
+    res.render('posts/create', { title: 'create post' }); //view(ui=>create.ejs)
 };
 
 exports.postCreatePost = async (req, res) => {
@@ -27,7 +27,7 @@ exports.getEditPost = async (req, res) => {
         where: { id: req.params.id, authorId: req.session.userId },
     });
     if (!post) return res.redirect('/posts');
-    res.render('posts/edit', { post, title: 'post edit' });
+    res.render('posts/edit', { post, title: 'post edit' }); //view(ui=>edit.ejs)
 };
 
 exports.postEditPost = async (req, res) => {

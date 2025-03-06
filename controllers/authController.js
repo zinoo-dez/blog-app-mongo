@@ -3,7 +3,7 @@ const PrismaClient = require('@prisma/client').PrismaClient;
 const prisma = new PrismaClient();
 
 exports.getRegister = (_, res) => {
-    res.render('auth/register', { title: 'Register' }); //view
+    res.render('auth/register', { title: 'Register' }); //view(ui=>register.ejs)
 };
 
 exports.postRegister = async (req, res) => {
@@ -22,7 +22,6 @@ exports.postRegister = async (req, res) => {
         await prisma.user.create({
             data: { name, email, password: hashedPassword }
         });
-
         res.redirect('/auth/login');
     } catch (error) {
         console.error('Error during registration:', error);
@@ -31,7 +30,7 @@ exports.postRegister = async (req, res) => {
 };
 
 exports.getLogin = (req, res) => {
-    res.render('auth/login', { title: 'Login' });
+    res.render('auth/login', { title: 'Login' }); //view login form
 };
 
 exports.postLogin = async (req, res) => {
@@ -46,6 +45,7 @@ exports.postLogin = async (req, res) => {
     if (user && await bcrypt.compare(password, user.password)) {
         req.session.userId = user.id;
         req.session.name = user.name;
+        req.session.role = "Super Admin"
         return res.redirect('/');
     }
     res.redirect('/auth/login');

@@ -1,21 +1,27 @@
 const express = require('express');
 const app = express();
 const path = require('path')
-const expressLayouts = require('express-ejs-layouts');
 const session = require('express-session');
-const authRoutes = require('./routes/auth');
-const postRoutes = require('./routes/posts');
-const indexRoutes = require('./routes/index');
+const expressLayouts = require('express-ejs-layouts');
 const authMiddleware = require('./middlewares/authMiddleware');
+const authRoutes = require('./routes/authRoutes');
+const postRoutes = require('./routes/postsRoutes');
+const indexRoutes = require('./routes/indexRoutes');
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, "views"))
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({ secret: process.env.SECRET, resave: false, saveUninitialized: true }));
-app.use(expressLayouts)
+app.use(session(
+    {
+        secret: process.env.SECRET
+        // resave: false, // not overwrite not change value
+        // saveUninitialized: false // not create session(data not exist)
+    }
+));
+app.use(expressLayouts) // layout.ejs
 app.use((req, res, next) => {
-    res.locals.userId = req.session.userId;
+    res.locals.userId = req.session.userId; // pass userId to ejs
     next();
 });
 app.use('/', indexRoutes);

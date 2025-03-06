@@ -4,9 +4,20 @@
   <div class="shadow m-3 p-4">
     <h4><%= post.title %></h4>
     <p><%= post.content %></p>
+
     <a href="/posts/edit/<%= post.id %>" class="btn btn-primary">Edit</a>
-    <form action="/posts/delete/<%= post.id %>" method="POST" style="display:inline;">
-      <button type="submit" class="btn btn-danger">Delete</button>
+    <form
+      action="/posts/delete/<%= post.id %>"
+      method="POST"
+      style="display: inline"
+    >
+      <button
+        type="submit"
+        onclick="return confirm('are you sure?')"
+        class="btn btn-danger"
+      >
+        Delete
+      </button>
     </form>
   </div>
   <% }) %>
