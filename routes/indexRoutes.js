@@ -25,19 +25,26 @@ exports.getSearchPosts = async (req, res) => {
 
 router.get('/', async (req, res) => {
     // res.send("hello")
+    // http://localhost:5000?page=1&perPage=8
     try {
         const { page = 1, perPage = 8 } = req.query;
         const skip = (page - 1) * perPage;
         const posts = await prisma.post.findMany({
+            // ****
             skip,
             take: Number(perPage),
+            //**** */
+            // orderBy: {
+            //     createdAt: 'desc'
+            // }
         });
         const totalPosts = await prisma.post.count();
+        console.log(totalPosts,posts)
         res.render('index2', { title: 'Home', posts, page: parseInt(page), perPage: parseInt(perPage), totalPosts, totalPages: Math.ceil(totalPosts / perPage) }); //view(ui=>index.ejs)
     } catch (error) {
         console.error('Error fetching posts:', error);
         res.status(500).send('An error occurred while fetching posts.');
     }
 });
-// router.get('/search', exports.getSearchPosts);
+router.get('/search', exports.getSearchPosts);
 module.exports = router;

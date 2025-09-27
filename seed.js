@@ -3,8 +3,6 @@ const prisma = new PrismaClient();
 const bcrypt = require('bcryptjs');
 const { faker } = require('@faker-js/faker');
 
-
-
 async function seedUsers(count) {
     const users = [];
     for (let i = 0; i < count; i++) {
@@ -14,11 +12,10 @@ async function seedUsers(count) {
             password: await bcrypt.hash('password', 10),
         });
     }
-
     try {
         await prisma.user.createMany({
             data: users,
-            // skipDuplicates: true,
+            // skipDuplicates: true, (error in mongodb(not support))
         });
         console.log(`Successfully seeded ${count} users!`);
     } catch (error) {
@@ -28,36 +25,31 @@ async function seedUsers(count) {
 
 async function seedPosts(count) {
     const posts = [];
-
     for (let i = 0; i < count; i++) {
         const user = await prisma.user.findFirst({
             select: {
                 id: true,
             },
         });
-
         if (!user) {
             throw new Error('No users found');
         }
-
         posts.push({
             title: faker.lorem.sentence(),
             content: faker.lorem.paragraph(),
             authorId: user.id,
         });
     }
-
     try {
         await prisma.post.createMany({
             data: posts,
-            // skipDuplicates: true,
+            // skipDuplicates: true, (error in mongodb(not support))
         });
         console.log(`Successfully seeded ${count} posts!`);
     } catch (error) {
         console.error('Error seeding posts:', error);
     }
 }
-
 // Run the seeding sequentially
 async function runSeed() {
     try {

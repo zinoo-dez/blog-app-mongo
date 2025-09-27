@@ -4,7 +4,12 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon app.js",
-    "seed": "node seed.js",
+    "db:seed": "node seed.js",
+    "db:push": "npx prisma db push",
+    "db:studio": "npx prisma studio",
+    "db:generate": "npx prisma generate",
+    "db:init": "npx prisma init",
+    "format": "npx prisma format",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

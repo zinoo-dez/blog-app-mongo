@@ -13,10 +13,11 @@ exports.postRegister = async (req, res) => {
             where: { email }
         });
         if (existingUser) {
-            return res.status(400).render('auth/register', {
+            res.status(400).render('auth/register', {
                 title: 'Register',
                 error: 'Email already in use.'
             });
+            return;
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         await prisma.user.create({

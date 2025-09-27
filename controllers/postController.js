@@ -2,7 +2,10 @@ const PrismaClient = require('@prisma/client').PrismaClient;
 const prisma = new PrismaClient();
 
 exports.getPosts = async (req, res) => {
-    const posts = await prisma.post.findMany({ where: { authorId: req.session.userId } });
+    const posts = await prisma.post.findMany(
+        { where: 
+            { authorId: req.session.userId } 
+        });
     res.render('posts/list', { posts, title: 'posts' }); //view(ui=>list.ejs)
 };
 

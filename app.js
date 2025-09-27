@@ -14,16 +14,21 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session(
     {
-        secret: process.env.SECRET
-        // resave: false, // not overwrite not change value
-        // saveUninitialized: false // not create session(data not exist)
+        secret: process.env.SECRET,
+        // resave: false,
+        // saveUninitialized: false
     }
 ));
 app.use(expressLayouts) // layout.ejs
 app.use((req, res, next) => {
     res.locals.userId = req.session.userId; // pass userId to ejs
+    res.locals.name = req.session.name;
+    res.locals.role = req.session.role;
     next();
 });
+// app.use("/",(req,res)=>{
+//     res.end("Hello World")
+// })
 app.use('/', indexRoutes);
 app.use('/auth', authRoutes);
 app.use('/posts', authMiddleware, postRoutes);
